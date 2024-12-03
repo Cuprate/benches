@@ -10,7 +10,10 @@
 
 use std::time::Instant;
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{
+    black_box as b, criterion_group, criterion_main, measurement::WallTime, BenchmarkGroup,
+    Criterion,
+};
 use function_name::named;
 
 use cuprate_blockchain::{
@@ -24,40 +27,41 @@ use cuprate_criterion_database::{TmpEnv, KEY, VALUE};
 criterion_group! {
     name = benches;
     config = Criterion::default();
-    targets =
-    // `DatabaseRo`
-    ro_get,
-    ro_len,
-    ro_first,
-    ro_last,
-    ro_is_empty,
-    ro_contains,
-
-    // `DatabaseRo` with a `TxRw`
-    rw_get,
-    rw_len,
-    rw_first,
-    rw_last,
-    rw_is_empty,
-    rw_contains,
-
-    // `DatabaseIter`
-    get_range,
-    iter,
-    keys,
-    values,
-
-    // `DatabaseRw`
-    put,
-    delete,
-    pop_first,
-    pop_last,
-    take,
+    targets = db_benches
 }
 criterion_main!(benches);
 
-fn group() -> String {
-    format!("{} (db)", cuprate_criterion_database::GROUP)
+fn db_benches(c: &mut Criterion) {
+    let mut g = c.benchmark_group(format!("{} (db)", cuprate_criterion_database::GROUP));
+
+    // `DatabaseRo`
+    ro_get(&mut g);
+    ro_len(&mut g);
+    ro_first(&mut g);
+    ro_last(&mut g);
+    ro_is_empty(&mut g);
+    ro_contains(&mut g);
+
+    // `DatabaseRo` with a `TxRw`
+    rw_get(&mut g);
+    rw_len(&mut g);
+    rw_first(&mut g);
+    rw_last(&mut g);
+    rw_is_empty(&mut g);
+    rw_contains(&mut g);
+
+    // `DatabaseIter`
+    get_range(&mut g);
+    iter(&mut g);
+    keys(&mut g);
+    values(&mut g);
+
+    // `DatabaseRw`
+    put(&mut g);
+    delete(&mut g);
+    pop_first(&mut g);
+    pop_last(&mut g);
+    take(&mut g);
 }
 
 //---------------------------------------------------------------------------------------------------- DatabaseRo
@@ -69,96 +73,90 @@ fn group() -> String {
 
 /// [`DatabaseRo::get`]
 #[named]
-fn ro_get(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn ro_get(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_ro = env_inner.tx_ro().unwrap();
     let table = env_inner.open_db_ro::<Outputs>(&tx_ro).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let _: Output = table.get(black_box(&KEY)).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let _: Output = table.get(b(&KEY)).unwrap();
         });
     });
 }
 
 /// [`DatabaseRo::len`]
 #[named]
-fn ro_len(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn ro_len(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_ro = env_inner.tx_ro().unwrap();
     let table = env_inner.open_db_ro::<Outputs>(&tx_ro).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            black_box(table.len()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            b(table.len()).unwrap();
         });
     });
 }
 
 /// [`DatabaseRo::first`]
 #[named]
-fn ro_first(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn ro_first(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_ro = env_inner.tx_ro().unwrap();
     let table = env_inner.open_db_ro::<Outputs>(&tx_ro).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let (_, _): (PreRctOutputId, Output) = black_box(table.first()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let (_, _): (PreRctOutputId, Output) = b(table.first()).unwrap();
         });
     });
 }
 
 /// [`DatabaseRo::last`]
 #[named]
-fn ro_last(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn ro_last(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_ro = env_inner.tx_ro().unwrap();
     let table = env_inner.open_db_ro::<Outputs>(&tx_ro).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let (_, _): (PreRctOutputId, Output) = black_box(table.last()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let (_, _): (PreRctOutputId, Output) = b(table.last()).unwrap();
         });
     });
 }
 
 /// [`DatabaseRo::is_empty`]
 #[named]
-fn ro_is_empty(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn ro_is_empty(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_ro = env_inner.tx_ro().unwrap();
     let table = env_inner.open_db_ro::<Outputs>(&tx_ro).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            black_box(table.is_empty()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            b(table.is_empty()).unwrap();
         });
     });
 }
 
 /// [`DatabaseRo::contains`]
 #[named]
-fn ro_contains(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn ro_contains(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_ro = env_inner.tx_ro().unwrap();
     let table = env_inner.open_db_ro::<Outputs>(&tx_ro).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            table.contains(black_box(&KEY)).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            table.contains(b(&KEY)).unwrap();
         });
     });
 }
@@ -170,96 +168,90 @@ fn ro_contains(c: &mut Criterion) {
 
 /// [`DatabaseRw::get`]
 #[named]
-fn rw_get(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn rw_get(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
     let table = env_inner.open_db_rw::<Outputs>(&tx_rw).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let _: Output = table.get(black_box(&KEY)).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let _: Output = table.get(b(&KEY)).unwrap();
         });
     });
 }
 
 /// [`DatabaseRw::len`]
 #[named]
-fn rw_len(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn rw_len(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
     let table = env_inner.open_db_rw::<Outputs>(&tx_rw).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            black_box(table.len()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            b(table.len()).unwrap();
         });
     });
 }
 
 /// [`DatabaseRw::first`]
 #[named]
-fn rw_first(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn rw_first(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
     let table = env_inner.open_db_rw::<Outputs>(&tx_rw).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let (_, _): (PreRctOutputId, Output) = black_box(table.first()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let (_, _): (PreRctOutputId, Output) = b(table.first()).unwrap();
         });
     });
 }
 
 /// [`DatabaseRw::last`]
 #[named]
-fn rw_last(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn rw_last(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
     let table = env_inner.open_db_rw::<Outputs>(&tx_rw).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let (_, _): (PreRctOutputId, Output) = black_box(table.last()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let (_, _): (PreRctOutputId, Output) = b(table.last()).unwrap();
         });
     });
 }
 
 /// [`DatabaseRw::is_empty`]
 #[named]
-fn rw_is_empty(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn rw_is_empty(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
     let table = env_inner.open_db_rw::<Outputs>(&tx_rw).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            black_box(table.is_empty()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            b(table.is_empty()).unwrap();
         });
     });
 }
 
 /// [`DatabaseRw::contains`]
 #[named]
-fn rw_contains(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn rw_contains(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
     let table = env_inner.open_db_rw::<Outputs>(&tx_rw).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            table.contains(black_box(&KEY)).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            table.contains(b(&KEY)).unwrap();
         });
     });
 }
@@ -267,18 +259,17 @@ fn rw_contains(c: &mut Criterion) {
 //---------------------------------------------------------------------------------------------------- DatabaseIter
 /// [`DatabaseIter::get_range`]
 #[named]
-fn get_range(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn get_range(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value_100();
     let env_inner = env.env.env_inner();
     let tx_ro = env_inner.tx_ro().unwrap();
     let table = env_inner.open_db_ro::<Outputs>(&tx_ro).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let range = table.get_range(black_box(..)).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let range = table.get_range(b(..)).unwrap();
             for result in range {
-                let _: Output = black_box(result.unwrap());
+                let _: Output = b(result.unwrap());
             }
         });
     });
@@ -286,18 +277,17 @@ fn get_range(c: &mut Criterion) {
 
 /// [`DatabaseIter::iter`]
 #[named]
-fn iter(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn iter(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value_100();
     let env_inner = env.env.env_inner();
     let tx_ro = env_inner.tx_ro().unwrap();
     let table = env_inner.open_db_ro::<Outputs>(&tx_ro).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let iter = black_box(table.iter()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let iter = b(table.iter()).unwrap();
             for result in iter {
-                let _: (PreRctOutputId, Output) = black_box(result.unwrap());
+                let _: (PreRctOutputId, Output) = b(result.unwrap());
             }
         });
     });
@@ -305,18 +295,17 @@ fn iter(c: &mut Criterion) {
 
 /// [`DatabaseIter::keys`]
 #[named]
-fn keys(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn keys(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value_100();
     let env_inner = env.env.env_inner();
     let tx_ro = env_inner.tx_ro().unwrap();
     let table = env_inner.open_db_ro::<Outputs>(&tx_ro).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let keys = black_box(table.keys()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let keys = b(table.keys()).unwrap();
             for result in keys {
-                let _: PreRctOutputId = black_box(result.unwrap());
+                let _: PreRctOutputId = b(result.unwrap());
             }
         });
     });
@@ -324,18 +313,17 @@ fn keys(c: &mut Criterion) {
 
 /// [`DatabaseIter::values`]
 #[named]
-fn values(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn values(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new().with_key_value_100();
     let env_inner = env.env.env_inner();
     let tx_ro = env_inner.tx_ro().unwrap();
     let table = env_inner.open_db_ro::<Outputs>(&tx_ro).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let values = black_box(table.values()).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let values = b(table.values()).unwrap();
             for result in values {
-                let _: Output = black_box(result.unwrap());
+                let _: Output = b(result.unwrap());
             }
         });
     });
@@ -344,8 +332,7 @@ fn values(c: &mut Criterion) {
 //---------------------------------------------------------------------------------------------------- DatabaseRw
 /// [`DatabaseRw::put`]
 #[named]
-fn put(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn put(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
@@ -353,9 +340,9 @@ fn put(c: &mut Criterion) {
 
     let mut key = KEY;
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            table.put(black_box(&key), black_box(&VALUE)).unwrap();
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            table.put(b(&key), b(&VALUE)).unwrap();
             key.amount += 1;
         });
     });
@@ -363,8 +350,7 @@ fn put(c: &mut Criterion) {
 
 /// [`DatabaseRw::delete`]
 #[named]
-fn delete(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn delete(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
@@ -372,8 +358,8 @@ fn delete(c: &mut Criterion) {
 
     let mut key = KEY;
 
-    c.bench_function(function_name!(), |b| {
-        b.iter_custom(|iters| {
+    g.bench_function(function_name!(), |c| {
+        c.iter_custom(|iters| {
             for _ in 0..iters {
                 table.put(&key, &VALUE).unwrap();
                 key.amount += 1;
@@ -393,8 +379,7 @@ fn delete(c: &mut Criterion) {
 
 /// [`DatabaseRw::pop_first`]
 #[named]
-fn pop_first(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn pop_first(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
@@ -402,8 +387,8 @@ fn pop_first(c: &mut Criterion) {
 
     let mut key = KEY;
 
-    c.bench_function(function_name!(), |b| {
-        b.iter_custom(|iters| {
+    g.bench_function(function_name!(), |c| {
+        c.iter_custom(|iters| {
             for _ in 0..iters {
                 table.put(&key, &VALUE).unwrap();
                 key.amount += 1;
@@ -423,8 +408,7 @@ fn pop_first(c: &mut Criterion) {
 
 /// [`DatabaseRw::pop_last`]
 #[named]
-fn pop_last(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn pop_last(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
@@ -432,8 +416,8 @@ fn pop_last(c: &mut Criterion) {
 
     let mut key = KEY;
 
-    c.bench_function(function_name!(), |b| {
-        b.iter_custom(|iters| {
+    g.bench_function(function_name!(), |c| {
+        c.iter_custom(|iters| {
             for _ in 0..iters {
                 table.put(&key, &VALUE).unwrap();
                 key.amount += 1;
@@ -453,17 +437,16 @@ fn pop_last(c: &mut Criterion) {
 
 /// [`DatabaseRw::take`]
 #[named]
-fn take(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn take(g: &mut BenchmarkGroup<'_, WallTime>) {
     let env = TmpEnv::new();
     let env_inner = env.env.env_inner();
     let tx_rw = env_inner.tx_rw().unwrap();
     let mut table = env_inner.open_db_rw::<Outputs>(&tx_rw).unwrap();
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
             table.put(&KEY, &VALUE).unwrap();
-            let _: Output = black_box(table.take(&black_box(KEY)).unwrap());
+            let _: Output = b(table.take(&b(KEY)).unwrap());
         });
     });
 }

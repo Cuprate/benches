@@ -1,7 +1,10 @@
 //! Benchmarks for `cuprate_helper::cast`.
 #![allow(unused_attributes, unused_crate_dependencies)]
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{
+    black_box as b, criterion_group, criterion_main, measurement::WallTime, BenchmarkGroup,
+    Criterion,
+};
 use function_name::named;
 
 use cuprate_helper::cast::{
@@ -13,34 +16,36 @@ use cuprate_criterion_helper::GROUP;
 criterion_group! {
     name = benches;
     config = Criterion::default();
-    targets = integer, unsigned,
+    targets = cast_benches,
 }
 criterion_main!(benches);
 
+fn cast_benches(c: &mut Criterion) {
+    let mut g = c.benchmark_group(GROUP);
+    integer(&mut g);
+    unsigned(&mut g);
+}
+
 /// Benchmark integer casts.
 #[named]
-fn integer(c: &mut Criterion) {
-    let mut g = c.benchmark_group(GROUP);
-
-    g.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            black_box(i32_to_isize(black_box(0)));
-            black_box(i64_to_isize(black_box(0)));
-            black_box(isize_to_i64(black_box(0)));
+fn integer(g: &mut BenchmarkGroup<'_, WallTime>) {
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            b(i32_to_isize(b(0)));
+            b(i64_to_isize(b(0)));
+            b(isize_to_i64(b(0)));
         });
     });
 }
 
 /// Benchmark unsigned integer casts.
 #[named]
-fn unsigned(c: &mut Criterion) {
-    let mut g = c.benchmark_group(GROUP);
-
-    g.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            black_box(u32_to_usize(black_box(0)));
-            black_box(u64_to_usize(black_box(0)));
-            black_box(usize_to_u64(black_box(0)));
+fn unsigned(g: &mut BenchmarkGroup<'_, WallTime>) {
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            b(u32_to_usize(b(0)));
+            b(u64_to_usize(b(0)));
+            b(usize_to_u64(b(0)));
         });
     });
 }

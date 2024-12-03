@@ -4,7 +4,10 @@
 
 use std::{num::NonZeroU64, time::Instant};
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{
+    black_box as b, criterion_group, criterion_main, measurement::WallTime, BenchmarkGroup,
+    Criterion,
+};
 use cuprate_helper::cast::usize_to_u64;
 use function_name::named;
 
@@ -21,31 +24,34 @@ use cuprate_criterion_blockchain::generate_fake_blocks;
 criterion_group! {
     name = benches;
     config = Criterion::default();
-    targets =
-        add_block_v1_tx2,
-        add_block_v9_tx3,
-        add_block_v16_tx0,
-        add_alt_block_v1_tx2,
-        add_alt_block_v9_tx3,
-        add_alt_block_v16_tx0,
+    targets = block_benches,
 }
 criterion_main!(benches);
 
-fn group() -> String {
-    format!("{} (block)", cuprate_criterion_blockchain::GROUP)
+fn block_benches(c: &mut Criterion) {
+    let mut g = c.benchmark_group(format!("{} (block)", cuprate_criterion_blockchain::GROUP));
+    add_block_v1_tx2(&mut g);
+    add_block_v9_tx3(&mut g);
+    add_block_v16_tx0(&mut g);
+    add_alt_block_v1_tx2(&mut g);
+    add_alt_block_v9_tx3(&mut g);
+    add_alt_block_v16_tx0(&mut g);
 }
 
 /// Inner function for benchmarking [`block::add_block`].
 #[expect(clippy::significant_drop_tightening)]
-fn add_block_inner(c: &mut Criterion, function_name: &str, block: &VerifiedBlockInformation) {
-    let mut c = c.benchmark_group(group());
+fn add_block_inner(
+    g: &mut BenchmarkGroup<'_, WallTime>,
+    function_name: &str,
+    block: &VerifiedBlockInformation,
+) {
     let env = cuprate_criterion_blockchain::TmpEnv::new();
 
-    c.bench_function(function_name, |b| {
+    g.bench_function(function_name, |c| {
         // We use `iter_custom` because we need to generate an
         // appropriate amount of blocks and only time the `add_block`.
-        b.iter_custom(|count| {
-            let blocks = black_box(generate_fake_blocks(block, count));
+        c.iter_custom(|count| {
+            let blocks = b(generate_fake_blocks(block, count));
 
             let env_inner = env.env.env_inner();
             let tx_rw = env_inner.tx_rw().unwrap();
@@ -53,8 +59,8 @@ fn add_block_inner(c: &mut Criterion, function_name: &str, block: &VerifiedBlock
 
             let start = Instant::now();
             for block in &blocks {
-                let block = black_box(block);
-                black_box(block::add_block(block, &mut tables)).unwrap();
+                let block = b(block);
+                b(block::add_block(block, &mut tables)).unwrap();
             }
             start.elapsed()
         });
@@ -62,24 +68,27 @@ fn add_block_inner(c: &mut Criterion, function_name: &str, block: &VerifiedBlock
 }
 
 #[named]
-fn add_block_v1_tx2(c: &mut Criterion) {
-    add_block_inner(c, function_name!(), &BLOCK_V1_TX2);
+fn add_block_v1_tx2(g: &mut BenchmarkGroup<'_, WallTime>) {
+    add_block_inner(g, function_name!(), &BLOCK_V1_TX2);
 }
 
 #[named]
-fn add_block_v9_tx3(c: &mut Criterion) {
-    add_block_inner(c, function_name!(), &BLOCK_V9_TX3);
+fn add_block_v9_tx3(g: &mut BenchmarkGroup<'_, WallTime>) {
+    add_block_inner(g, function_name!(), &BLOCK_V9_TX3);
 }
 
 #[named]
-fn add_block_v16_tx0(c: &mut Criterion) {
-    add_block_inner(c, function_name!(), &BLOCK_V16_TX0);
+fn add_block_v16_tx0(g: &mut BenchmarkGroup<'_, WallTime>) {
+    add_block_inner(g, function_name!(), &BLOCK_V16_TX0);
 }
 
 /// Inner function for benchmarking [`alt_block::add_alt_block`].
 #[expect(clippy::significant_drop_tightening)]
-fn add_alt_block_inner(c: &mut Criterion, function_name: &str, block: &VerifiedBlockInformation) {
-    let mut c = c.benchmark_group(group());
+fn add_alt_block_inner(
+    g: &mut BenchmarkGroup<'_, WallTime>,
+    function_name: &str,
+    block: &VerifiedBlockInformation,
+) {
     let env = cuprate_criterion_blockchain::TmpEnv::new();
 
     // We must have at least 1 block or else `add_alt_block` will panic.
@@ -94,10 +103,10 @@ fn add_alt_block_inner(c: &mut Criterion, function_name: &str, block: &VerifiedB
         block::add_block(&block, &mut tables).unwrap();
     }
 
-    c.bench_function(function_name, |b| {
+    g.bench_function(function_name, |c| {
         // We use `iter_custom` because we need to generate an
         // appropriate amount of blocks and only time the `add_block`.
-        b.iter_custom(|count| {
+        c.iter_custom(|count| {
             // Map the block to a fake alt block.
             let blocks = generate_fake_blocks(block, count)
                 .into_iter()
@@ -122,8 +131,8 @@ fn add_alt_block_inner(c: &mut Criterion, function_name: &str, block: &VerifiedB
 
             let start = Instant::now();
             for block in &blocks {
-                let block = black_box(block);
-                black_box(alt_block::add_alt_block(block, &mut tables)).unwrap();
+                let block = b(block);
+                b(alt_block::add_alt_block(block, &mut tables)).unwrap();
             }
             start.elapsed()
         });
@@ -131,16 +140,16 @@ fn add_alt_block_inner(c: &mut Criterion, function_name: &str, block: &VerifiedB
 }
 
 #[named]
-fn add_alt_block_v1_tx2(c: &mut Criterion) {
-    add_alt_block_inner(c, function_name!(), &BLOCK_V1_TX2);
+fn add_alt_block_v1_tx2(g: &mut BenchmarkGroup<'_, WallTime>) {
+    add_alt_block_inner(g, function_name!(), &BLOCK_V1_TX2);
 }
 
 #[named]
-fn add_alt_block_v9_tx3(c: &mut Criterion) {
-    add_alt_block_inner(c, function_name!(), &BLOCK_V9_TX3);
+fn add_alt_block_v9_tx3(g: &mut BenchmarkGroup<'_, WallTime>) {
+    add_alt_block_inner(g, function_name!(), &BLOCK_V9_TX3);
 }
 
 #[named]
-fn add_alt_block_v16_tx0(c: &mut Criterion) {
-    add_alt_block_inner(c, function_name!(), &BLOCK_V16_TX0);
+fn add_alt_block_v16_tx0(g: &mut BenchmarkGroup<'_, WallTime>) {
+    add_alt_block_inner(g, function_name!(), &BLOCK_V16_TX0);
 }

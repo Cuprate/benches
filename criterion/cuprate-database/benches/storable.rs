@@ -2,7 +2,10 @@
 
 #![allow(unused_crate_dependencies, unused_attributes)]
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{
+    black_box as b, criterion_group, criterion_main, measurement::WallTime, BenchmarkGroup,
+    Criterion,
+};
 use function_name::named;
 
 use cuprate_blockchain::types::{Output, PreRctOutputId};
@@ -13,62 +16,58 @@ use cuprate_criterion_database::{KEY, VALUE};
 criterion_group! {
     name = benches;
     config = Criterion::default();
-    targets =
-    pre_rct_output_id_as_bytes,
-    pre_rct_output_id_from_bytes,
-    output_as_bytes,
-    output_from_bytes
+    targets = storable_bench,
 }
 criterion_main!(benches);
 
-fn group() -> String {
-    format!("{} (storable)", cuprate_criterion_database::GROUP)
+fn storable_bench(c: &mut Criterion) {
+    let mut g = c.benchmark_group(format!("{} (storable)", cuprate_criterion_database::GROUP));
+    pre_rct_output_id_as_bytes(&mut g);
+    pre_rct_output_id_from_bytes(&mut g);
+    output_as_bytes(&mut g);
+    output_from_bytes(&mut g);
 }
 
 /// [`PreRctOutputId`] cast as bytes.
 #[named]
-fn pre_rct_output_id_as_bytes(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            black_box(Storable::as_bytes(black_box(&KEY)));
+fn pre_rct_output_id_as_bytes(g: &mut BenchmarkGroup<'_, WallTime>) {
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            b(Storable::as_bytes(b(&KEY)));
         });
     });
 }
 
 /// [`PreRctOutputId`] cast from bytes.
 #[named]
-fn pre_rct_output_id_from_bytes(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn pre_rct_output_id_from_bytes(g: &mut BenchmarkGroup<'_, WallTime>) {
     let bytes = Storable::as_bytes(&KEY);
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let _: PreRctOutputId = black_box(Storable::from_bytes(black_box(bytes)));
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let _: PreRctOutputId = b(Storable::from_bytes(b(bytes)));
         });
     });
 }
 
 /// [`Output`] cast as bytes.
 #[named]
-fn output_as_bytes(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            black_box(Storable::as_bytes(black_box(&VALUE)));
+fn output_as_bytes(g: &mut BenchmarkGroup<'_, WallTime>) {
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            b(Storable::as_bytes(b(&VALUE)));
         });
     });
 }
 
 /// [`Output`] cast from bytes.
 #[named]
-fn output_from_bytes(c: &mut Criterion) {
-    let mut c = c.benchmark_group(group());
+fn output_from_bytes(g: &mut BenchmarkGroup<'_, WallTime>) {
     let bytes = Storable::as_bytes(&VALUE);
 
-    c.bench_function(function_name!(), |b| {
-        b.iter(|| {
-            let _: Output = black_box(Storable::from_bytes(black_box(bytes)));
+    g.bench_function(function_name!(), |c| {
+        c.iter(|| {
+            let _: Output = b(Storable::from_bytes(b(bytes)));
         });
     });
 }

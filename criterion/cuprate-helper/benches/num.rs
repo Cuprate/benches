@@ -1,8 +1,10 @@
 //! Benchmarks for `cuprate_helper::cast`.
 #![allow(unused_attributes, unused_crate_dependencies)]
 
-use criterion::black_box as b;
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{
+    black_box as b, criterion_group, criterion_main, measurement::WallTime, BenchmarkGroup,
+    Criterion,
+};
 use function_name::named;
 
 use cuprate_helper::num;
@@ -12,18 +14,21 @@ use cuprate_criterion_helper::GROUP;
 criterion_group! {
     name = benches;
     config = Criterion::default();
-    targets =
-        cmp_float,
-        cmp_float_nan,
-        get_mid,
-        median,
+    targets = num_benches,
 }
 criterion_main!(benches);
 
+fn num_benches(c: &mut Criterion) {
+    let mut g = c.benchmark_group(GROUP);
+    cmp_float(&mut g);
+    cmp_float_nan(&mut g);
+    get_mid(&mut g);
+    median(&mut g);
+}
+
 /// Benchmark [`curpate_helper::num::cmp_float`].
 #[named]
-fn cmp_float(c: &mut Criterion) {
-    let mut g = c.benchmark_group(GROUP);
+fn cmp_float(g: &mut BenchmarkGroup<'_, WallTime>) {
     g.bench_function(function_name!(), |bench| {
         bench.iter(|| {
             b(num::cmp_float(b(0.0), b(0.0)));
@@ -33,8 +38,7 @@ fn cmp_float(c: &mut Criterion) {
 
 /// Benchmark [`curpate_helper::num::cmp_float_nan`].
 #[named]
-fn cmp_float_nan(c: &mut Criterion) {
-    let mut g = c.benchmark_group(GROUP);
+fn cmp_float_nan(g: &mut BenchmarkGroup<'_, WallTime>) {
     g.bench_function(function_name!(), |bench| {
         bench.iter(|| {
             b(num::cmp_float_nan(b(0.0), b(0.0)));
@@ -44,8 +48,7 @@ fn cmp_float_nan(c: &mut Criterion) {
 
 /// Benchmark [`curpate_helper::num::get_mid`].
 #[named]
-fn get_mid(c: &mut Criterion) {
-    let mut g = c.benchmark_group(GROUP);
+fn get_mid(g: &mut BenchmarkGroup<'_, WallTime>) {
     g.bench_function(function_name!(), |bench| {
         bench.iter(|| {
             b(num::get_mid(b(0_u8), b(0_u8)));
@@ -58,8 +61,7 @@ fn get_mid(c: &mut Criterion) {
 
 /// Benchmark [`curpate_helper::num::median`].
 #[named]
-fn median(c: &mut Criterion) {
-    let mut g = c.benchmark_group(GROUP);
+fn median(g: &mut BenchmarkGroup<'_, WallTime>) {
     g.bench_function(function_name!(), |bench| {
         bench.iter(|| {
             b(num::median(b(vec![0_u8, 1, 2, 3, 4, 5])));
