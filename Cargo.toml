@@ -33,36 +33,36 @@ opt-level = 3
 
 [workspace.dependencies]
 # Cuprate members
-cuprate-benchmark-lib     = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-benchmark-example = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-fast-sync         = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-consensus-rules   = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-constants         = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-consensus         = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-consensus-context = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-cryptonight       = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-helper            = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-epee-encoding     = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-fixed-bytes       = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-levin             = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-wire              = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-p2p               = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-p2p-core          = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-p2p-bucket        = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-dandelion-tower   = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-async-buffer      = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-address-book      = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-blockchain        = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-database          = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-database-service  = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-txpool            = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-pruning           = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-test-utils        = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-types             = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-json-rpc          = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-rpc-types         = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-rpc-interface     = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
-cuprate-zmq-types         = { git = "https://github.com/Cuprate/cuprate", rev = "38541db", default-features = false }
+cuprate-benchmark-lib     = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-benchmark-example = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-fast-sync         = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-consensus-rules   = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-constants         = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-consensus         = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-consensus-context = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-cryptonight       = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-helper            = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-epee-encoding     = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-fixed-bytes       = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-levin             = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-wire              = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-p2p               = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-p2p-core          = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-p2p-bucket        = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-dandelion-tower   = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-async-buffer      = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-address-book      = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-blockchain        = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-database          = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-database-service  = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-txpool            = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-pruning           = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-test-utils        = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-types             = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-json-rpc          = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-rpc-types         = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-rpc-interface     = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
+cuprate-zmq-types         = { git = "https://github.com/Cuprate/cuprate", rev = "7b8756f", default-features = false }
 
 # External dependencies
 anyhow                = { version = "1", default-features = false }

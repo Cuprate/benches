@@ -422,8 +422,8 @@ name = "cuprate-benchmark"
 version = "0.0.0"
 dependencies = [
  "cfg-if",
- "cuprate-benchmark-example 0.0.0 (git+https://github.com/Cuprate/cuprate?rev=38541db)",
- "cuprate-benchmark-lib 0.0.0 (git+https://github.com/Cuprate/cuprate?rev=38541db)",
+ "cuprate-benchmark-example 0.0.0 (git+https://github.com/Cuprate/cuprate?rev=7b8756f)",
+ "cuprate-benchmark-lib 0.0.0 (git+https://github.com/Cuprate/cuprate?rev=7b8756f)",
  "serde",
  "serde_json",
  "tracing",
@@ -434,15 +434,15 @@ dependencies = [
 name = "cuprate-benchmark-example"
 version = "0.0.0"
 dependencies = [
- "cuprate-benchmark-lib 0.0.0 (git+https://github.com/Cuprate/cuprate?rev=38541db)",
+ "cuprate-benchmark-lib 0.0.0 (git+https://github.com/Cuprate/cuprate?rev=7b8756f)",
 ]
 
 [[package]]
 name = "cuprate-benchmark-example"
 version = "0.0.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
- "cuprate-benchmark-lib 0.0.0 (git+https://github.com/Cuprate/cuprate?rev=38541db)",
+ "cuprate-benchmark-lib 0.0.0 (git+https://github.com/Cuprate/cuprate?rev=7b8756f)",
 ]
 
 [[package]]
@@ -452,15 +452,16 @@ version = "0.0.0"
 [[package]]
 name = "cuprate-benchmark-lib"
 version = "0.0.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 
 [[package]]
 name = "cuprate-blockchain"
 version = "0.0.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "bitflags",
  "bytemuck",
+ "bytes",
  "cuprate-database",
  "cuprate-database-service",
  "cuprate-helper",
@@ -477,7 +478,7 @@ dependencies = [
 [[package]]
 name = "cuprate-constants"
 version = "0.1.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 
 [[package]]
 name = "cuprate-criterion-blockchain"
@@ -566,7 +567,7 @@ dependencies = [
 [[package]]
 name = "cuprate-cryptonight"
 version = "0.1.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "digest",
  "groestl",
@@ -581,7 +582,7 @@ dependencies = [
 [[package]]
 name = "cuprate-database"
 version = "0.0.1"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "bytemuck",
  "bytes",
@@ -596,7 +597,7 @@ dependencies = [
 [[package]]
 name = "cuprate-database-service"
 version = "0.1.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "crossbeam",
  "cuprate-database",
@@ -609,7 +610,7 @@ dependencies = [
 [[package]]
 name = "cuprate-epee-encoding"
 version = "0.5.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "bytes",
  "cuprate-fixed-bytes",
@@ -622,7 +623,7 @@ dependencies = [
 [[package]]
 name = "cuprate-fixed-bytes"
 version = "0.1.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "bytes",
  "serde",
@@ -632,7 +633,7 @@ dependencies = [
 [[package]]
 name = "cuprate-helper"
 version = "0.1.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "cuprate-constants",
  "curve25519-dalek",
@@ -647,7 +648,7 @@ dependencies = [
 [[package]]
 name = "cuprate-json-rpc"
 version = "0.0.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "serde",
  "serde_json",
@@ -657,7 +658,7 @@ dependencies = [
 [[package]]
 name = "cuprate-levin"
 version = "0.1.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "bitflags",
  "bytes",
@@ -671,7 +672,7 @@ dependencies = [
 [[package]]
 name = "cuprate-p2p-core"
 version = "0.1.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "async-trait",
  "borsh",
@@ -693,7 +694,7 @@ dependencies = [
 [[package]]
 name = "cuprate-pruning"
 version = "0.1.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "borsh",
  "cuprate-constants",
@@ -703,7 +704,7 @@ dependencies = [
 [[package]]
 name = "cuprate-rpc-types"
 version = "0.0.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "cuprate-epee-encoding",
  "cuprate-fixed-bytes",
@@ -715,7 +716,7 @@ dependencies = [
 [[package]]
 name = "cuprate-test-utils"
 version = "0.1.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "async-trait",
  "borsh",
@@ -740,7 +741,7 @@ dependencies = [
 [[package]]
 name = "cuprate-types"
 version = "0.0.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "bytes",
  "cuprate-epee-encoding",
@@ -756,7 +757,7 @@ dependencies = [
 [[package]]
 name = "cuprate-wire"
 version = "0.1.0"
-source = "git+https://github.com/Cuprate/cuprate?rev=38541db#38541dbfda781277d48dd218bb676aede2f8b8a2"
+source = "git+https://github.com/Cuprate/cuprate?rev=7b8756f#7b8756fa80e386fb04173d8220c15c86bf9f9888"
 dependencies = [
  "bitflags",
  "bytes",
