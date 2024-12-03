@@ -11,6 +11,7 @@ members = [
     "criterion/cuprate-cryptonight",
     "criterion/cuprate-rpc-types",
     "criterion/cuprate-blockchain",
+    "criterion/monero-serai",
 ]
 
 [profile.release]

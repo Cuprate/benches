@@ -1741,6 +1741,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "monero-serai-criterion"
+version = "0.0.0"
+dependencies = [
+ "criterion",
+ "cuprate-constants",
+ "cuprate-helper",
+ "cuprate-test-utils",
+ "function_name",
+ "monero-serai",
+ "serde_json",
+]
+
+[[package]]
 name = "monero-simple-request-rpc"
 version = "0.1.0"
 source = "git+https://github.com/Cuprate/serai.git?rev=d5205ce#d5205ce2319e09414eb91d12cf38e83a08165f79"

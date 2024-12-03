@@ -1,0 +1,26 @@
+[package]
+name        = "monero-serai-criterion"
+version     = "0.0.0"
+edition     = "2021"
+description = "Criterion benchmarks for monero-serai"
+license     = "MIT"
+authors     = ["hinto-janai"]
+repository  = "https://github.com/Cuprate/benches/tree/main/criterion/monero-serai"
+keywords    = ["monero-serai", "criterion", "benchmark"]
+
+[dependencies]
+cuprate-constants  = { workspace = true, features = ["block"] }
+cuprate-helper     = { workspace = true, features = ["cast", "map", "num", "tx"] }
+cuprate-test-utils = { workspace = true }
+
+criterion     = { workspace = true }
+function_name = { workspace = true }
+monero-serai  = { workspace = true }
+serde_json    = { workspace = true, features = ["default"] }
+
+[[bench]]
+name    = "main"
+harness = false
+
+[lints]
+workspace = true
