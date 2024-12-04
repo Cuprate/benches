@@ -1,0 +1,33 @@
+[package]
+name        = "hashes-criterion"
+version     = "0.0.0"
+edition     = "2021"
+description = "Criterion benchmarks for hash functions used in Cuprate"
+license     = "MIT"
+authors     = ["hinto-janai"]
+repository  = "https://github.com/Cuprate/benches/tree/main/criterion/hashes"
+keywords    = ["hash", "criterion", "benchmark"]
+
+[dependencies]
+cuprate-constants     = { workspace = true, features = ["block"] }
+cuprate-helper        = { workspace = true, features = ["cast", "map", "num", "tx"] }
+cuprate-test-utils    = { workspace = true }
+cuprate-cryptonight   = { workspace = true }
+cuprate-cryptonight-c = { workspace = true }
+
+criterion     = { workspace = true }
+paste         = { workspace = true }
+randomx-rs    = { workspace = true }
+function_name = { workspace = true }
+monero-serai  = { workspace = true }
+sha2          = { workspace = true }
+sha3          = { workspace = true }
+blake3        = { workspace = true }
+serde_json    = { workspace = true, features = ["default"] }
+
+[[bench]]
+name    = "main"
+harness = false
+
+[lints]
+workspace = true
