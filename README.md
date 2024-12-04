@@ -6,6 +6,10 @@ See the [`Benchmarking` section in the Architecture book](https://architecture.c
 ## Run all benchmarks
 ```bash
 # Run all Criterion benchmarks.
+#
+# This takes ~3 hours as of these two commits:
+# - Cuprate/benches@f891e2a
+# - Cuprate/cuprate@7b8756f
 cargo bench
 
 # Run all `cuprate-benchmark` benchmarks.
