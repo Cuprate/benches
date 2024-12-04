@@ -58,9 +58,10 @@ macro_rules! generate_serde_benchmarks {
             let mut group = c.benchmark_group(format!("{GROUP} (serde, to_string)"));
 
             $(
+                let t: $t = serde_json::from_str($t_example).unwrap();
                 group.bench_function(stringify!([<$t:snake>]), |b| {
                     b.iter_batched(
-                        || $t_example.clone(),
+                        || t.clone(),
                         |t| drop(to_string(black_box(&t)).unwrap()),
                         BatchSize::SmallInput,
                     );

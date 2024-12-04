@@ -32,7 +32,7 @@ $MACHINE_NAME/
 - Within `benchmarks`, the data is placed in directories with the `Cuprate/cuprate` commit used
 
 ### Machines
-
-| Machine name/directory | CPU                    | Core/thread count | Memory | Disk |
-|------------------------|------------------------|-------------------|--------|------|
-| moo                    | Intel Xeon E5 2698 v3  | 8/16              | 32 GB  | NVMe SSD
+| Machine name/directory | CPU                    | Core/thread count | Memory           | Disk (sequential read, write) | Disk (random read, write) |
+|------------------------|------------------------|-------------------|------------------|-------------------------------|---------------------------|
+| moo                    | Intel Xeon E5 2698 v3  | 8/16              | 32 GB, 4000 MT/s | 350 MB/s, 100 MB/s            | 100 MB/s, 44 MB/s
+| red                    | AMD Ryzen 5950x        | 16/32             | 64 GB, 3600 MT/s | 4400 MB/s, 1600 MB/s          | 2200 MB/s, 1700 MB/s
